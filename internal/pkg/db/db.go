@@ -13,11 +13,15 @@ var (
 	//user     = "bakaef" // = os.Getenv("DB_USER")
 	//password = "qwertyqwerty" // = os.Getenv("DB_PASSWORD")
 	//dbname   = "calls" // = os.Getenv("DB_NAME")
-	host     = "95.163.180.8" // "localhost"
-	port     = 2000 // uint16(5432)
-	user     = "postgres" // = os.Getenv("DB_USER")
-	password = "qwerty" // = os.Getenv("DB_PASSWORD")
-	dbname   = "postgres" // = os.Getenv("DB_NAME")
+	// sslmode = "verify-full"
+	// sslrootcert = "/home/username/.postgresql/root.crt"
+
+	// please do not use this db :)
+	host     = "95.163.180.8"
+	port     = 2000
+	user     = "postgres"
+	password = "qwerty"
+	dbname   = "postgres"
 )
 
 
