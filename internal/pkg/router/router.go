@@ -1,7 +1,7 @@
 package router
 
 import (
-	// "avitocalls/internal/pkg/middleware"
+	"avitocalls/internal/pkg/middleware"
 	"avitocalls/internal/pkg/settings"
 	"github.com/dimfeld/httptreemux"
 	"log"
@@ -23,7 +23,7 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			//	handler = middleware.Authenticate(handler)
 			//}
 			//handler = middleware.CheckToken(handler) // обязательно
-			//handler = middleware.DecodeBody(handler)
+			handler = middleware.DecodeBody(handler)
 
 			//if pack.CORS {
 			//	s.Secure.CORSMap[pack.Type] = struct{}{}

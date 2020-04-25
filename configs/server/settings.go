@@ -2,13 +2,8 @@ package server
 
 import (
 	"avitocalls/internal/pkg/router"
-	//blogDelivery "counity/internal/pkg/blog/delivery"
-	//"counity/internal/pkg/router"
 	"avitocalls/internal/pkg/settings"
 	"github.com/dimfeld/httptreemux"
-	//"sync"
-	//
-	//postDelivery "counity/internal/pkg/post/delivery"
 	//userDelivery "counity/internal/pkg/user/delivery"
 	"sync"
 )
