@@ -3,6 +3,8 @@ package usecase
 import (
 	"avitocalls/internal/pkg/call"
 	"avitocalls/internal/pkg/call/repository"
+	"avitocalls/internal/pkg/db"
+	"avitocalls/internal/pkg/models"
 )
 
 type callUseCase struct {
@@ -16,8 +18,8 @@ func GetUseCase() call.UseCase {
 }
 
 
-//func (c callUseCase) GetReceiverObject(call models.Call) (models.Call, int, error) {
-//	// toDo normal implement
-//	return call, 200, nil
-//}
+func (c callUseCase) GetReceiverObject(call models.Call) (models.Call, int, error) {
+	// toDo normal implement
+	return call, 200, nil
+}
 

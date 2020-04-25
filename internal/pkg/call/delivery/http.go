@@ -36,7 +36,7 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		network.Jsonify(w, forms.CallerAnswer{
 			BString:   stringg,
 			Status:    http.StatusOK,
-			Message:   "successfully get post feed",
+			Message:   "successfully made call",
 		}, http.StatusOK)
 	case http.StatusExpectationFailed:
 		network.Jsonify(w, forms.CallerAnswer{
