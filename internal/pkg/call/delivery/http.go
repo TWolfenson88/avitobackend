@@ -11,6 +11,23 @@ import (
 	"net/http"
 )
 
+
+func WaitForCall(w http.ResponseWriter, r *http.Request, ps map[string]string) {
+	// пока это просто заглушка, в будущем тут надо проверять, не звонят ли юзеру в данный момент
+	if true {
+		network.Jsonify(w, forms.LongPollAnswer{
+			Caller:  "NoName",
+			Message: "nobody wants to call you",
+		}, http.StatusAccepted)
+	} else {
+		network.Jsonify(w, forms.LongPollAnswer{
+			Caller:  "Name",
+			Message: "user wants to make a call",
+		}, http.StatusOK)
+	}
+	return
+}
+
 func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	uc := usecase.GetUseCase()
 	var call models.Call
@@ -21,7 +38,6 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	if err != nil {
 		network.Jsonify(w, forms.ErrorAnswer{
 			Error:   err.Error(),
-			Status:  http.StatusInternalServerError,
 			Message: "Connecting to stun-server error",
 		}, http.StatusInternalServerError)
 		return
@@ -34,7 +50,6 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	if err != nil {
 		network.Jsonify(w, forms.ErrorAnswer{
 			Error:   err.Error(),
-			Status:  http.StatusInternalServerError,
 			Message: "Error",
 		}, http.StatusInternalServerError)
 		return
@@ -42,17 +57,16 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 
 	var stringg = "here i am"
 	switch code {
-	case 200:
+	case http.StatusOK:
 		network.Jsonify(w, forms.CallerAnswer{
 			BString: stringg,
-			Status:  http.StatusOK,
 			Message: "successfully made call",
 		}, http.StatusOK)
 	case http.StatusExpectationFailed:
 		network.Jsonify(w, forms.CallerAnswer{
 			BString: stringg,
-			Status:  http.StatusExpectationFailed,
 			Message: "user do not accepted call",
 		}, http.StatusOK)
 	}
+	return
 }

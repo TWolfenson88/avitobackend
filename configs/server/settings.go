@@ -18,6 +18,10 @@ var routesMap = map[string][]settings.MapHandler{
 		// CSRF:         false,
 		// TokenRequired:true,
 	}},
+	"/calls/wait": {{
+		Type:    			"GET",
+		Handler: 			callDelivery.WaitForCall,
+	}},
 }
 
 var doOnce sync.Once

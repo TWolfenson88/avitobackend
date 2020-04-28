@@ -16,7 +16,6 @@ func DecodeBody(next settings.HandlerFunc) settings.HandlerFunc {
 		if err != nil {
 			network.Jsonify(w, forms.ErrorAnswer{
 				Error:   err.Error(),
-				Status:  http.StatusNotAcceptable,
 				Message: "Invalid Json",
 			},  http.StatusNotAcceptable)
 		}

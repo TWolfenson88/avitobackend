@@ -23,8 +23,11 @@ func Jsonify(w http.ResponseWriter, object interface{}, status int) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("content-type", "application/json")
 	w.WriteHeader(status)
+	w.Header().Set("content-type", "application/json")
+
+
+	// w.WriteHeader(status)
 	_, err = w.Write(output)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
