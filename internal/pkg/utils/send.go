@@ -14,7 +14,7 @@ func failOnError(err error, msg string) {
 
 func Send(dater []byte, qName string) {
 	// подключение и объявление очереди вынести в отдельную функцию
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/%2F")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
