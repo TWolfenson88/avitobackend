@@ -12,14 +12,21 @@ services:
       - "8100:8100"
 
   rabbit:
-    build:
-      context: "../.."
-      dockerfile: "deploy/dev/rabbitmq/Dockerfile"
-    hostname: "rabbit"
-    ports:
-      - "5672:5672"
-      - "5672:5671"
-      - "4369:4369"
-      - "25672:25672"
+    rabbitmq:
+      image: "rabbitmq:3"
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      volumes:
+        - 'rabbitmq_data:/data'
+#    build:
+#      context: "../.."
+#      dockerfile: "deploy/dev/rabbitmq/Dockerfile"
+#    hostname: "rabbit"
+#    ports:
+#      - "5672:5672"
+#      - "5672:5671"
+#      - "4369:4369"
+#      - "25672:25672"
     depends_on:
       - "avitoback"
