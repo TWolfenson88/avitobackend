@@ -6,9 +6,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    network_mode: "host"
-    #volumes:
-    #  - 'rabbitmq_data:/data'
+    volumes:
+      - 'rabbitmq_data:/data'
     #    build:
     #      context: "../.."
     #      dockerfile: "deploy/dev/rabbitmq/Dockerfile"
