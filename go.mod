@@ -10,6 +10,7 @@ require (
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
 	golang.org/x/crypto v0.0.0-20200320181102-891825fb96df
 	golang.org/x/text v0.3.2 // indirect
 )

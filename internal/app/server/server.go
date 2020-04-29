@@ -2,6 +2,7 @@ package server
 
 import (
 	"avitocalls/configs/server"
+	"avitocalls/internal/pkg/utils"
 	"fmt"
 	"github.com/gobwas/ws"
 	"io"
@@ -32,7 +33,7 @@ func Start() {
 
 func StartTCP() {
 	// toDo rewrite normally! то есть вынести настройки и логику, тут оставить только сам запуск
-	ln, err := net.Listen("tcp", "localhost:8100")
+	ln, err := net.Listen("tcp", "0.0.0.0:8100")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,12 +53,16 @@ func StartTCP() {
 			defer conn.Close()
 
 			for {
-				fmt.Println("Opened")
+				fmt.Println("TCP: Opened")
 				header, err := ws.ReadHeader(conn)
 				if err != nil {
 					// handle error
 				}
-				time.Sleep(10 * time.Second)
+
+				// смотрим в очередь, а не звонят ли нам
+				a := utils.Rec("calling")
+				fmt.Printf("get %s, it's ok to do things \n", a)
+
 				payload := make([]byte, header.Length)
 				_, err = io.ReadFull(conn, payload)
 				if err != nil {
@@ -77,11 +82,13 @@ func StartTCP() {
 				if _, err := conn.Write(payload); err != nil {
 					// handle error
 				}
-				fmt.Println("Sended")
-				if header.OpCode == ws.OpClose {
-					return
-				}
+				utils.Send(payload, "answering")
+				fmt.Println("TCP: Sended")
 			}
+				//if header.OpCode == ws.OpClose {
+				//	return
+				//}
+			// }
 		}()
 	}
 
