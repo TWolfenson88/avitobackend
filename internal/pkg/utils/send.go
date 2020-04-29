@@ -23,8 +23,8 @@ func Send(dater []byte, qName string) {
 			fmt.Println("connected to RABBIT")
 			break
 		}
-		fmt.Println("Not connected")
-		time.Sleep(100 * time.Millisecond)
+		fmt.Println("Not connected: ", err)
+		time.Sleep(500 * time.Millisecond)
 	}
 	// conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 	// failOnError(err, "Failed to connect to RabbitMQ")
