@@ -60,8 +60,9 @@ func StartTCP() {
 				}
 
 				// смотрим в очередь, а не звонят ли нам
-
 				// a := utils.Rec("calling")
+
+				// ждем, пока в канал что-то не придет
 				a := <-utils.ChFirst
 
 				fmt.Printf("get %s, it's ok to do things \n", a)

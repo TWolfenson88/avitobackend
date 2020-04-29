@@ -43,6 +43,7 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 			Error:   err.Error(),
 			Message: "Shit with answer format: try again",
 		}, http.StatusInternalServerError)
+		return
 	}
 	network.Jsonify(w, sdp, http.StatusOK)
 
@@ -62,6 +63,7 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	//network.Jsonify(w, sdp, http.StatusOK)
 
 
+	// by accident :)
 	// uc := usecase.GetUseCase()
 	// var call models.Call
 	// err := json.Unmarshal(data.Body, &call)
