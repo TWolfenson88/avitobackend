@@ -60,7 +60,10 @@ func StartTCP() {
 				}
 
 				// смотрим в очередь, а не звонят ли нам
-				a := utils.Rec("calling")
+
+				// a := utils.Rec("calling")
+				a := <-utils.ChFirst
+
 				fmt.Printf("get %s, it's ok to do things \n", a)
 
 				payload := make([]byte, header.Length)
@@ -82,7 +85,10 @@ func StartTCP() {
 				if _, err := conn.Write(payload); err != nil {
 					// handle error
 				}
-				utils.Send(payload, "answering")
+
+				// utils.Send(payload, "answering")
+				utils.ChSecond<-payload
+
 				fmt.Println("TCP: Sended")
 			}
 				//if header.OpCode == ws.OpClose {

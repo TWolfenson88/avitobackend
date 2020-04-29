@@ -5,6 +5,7 @@ import (
 	"avitocalls/internal/pkg/network"
 	"avitocalls/internal/pkg/utils"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -27,9 +28,14 @@ func WaitForCall(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 
 func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	// minimalism
-	utils.Send([]byte("so call me maybe"), "calling")
+	go func() {
+		utils.ChFirst <- "call me maybe"
+		fmt.Println("pushed to channel ChFirst")
+	}()
 
-	res := utils.Rec("answering")
+	res := <-utils.ChSecond
+	fmt.Printf("result: %s", res)
+
 	var sdp forms.SDP
 	err := json.Unmarshal(res, &sdp)
 	if err != nil {
@@ -39,6 +45,21 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		}, http.StatusInternalServerError)
 	}
 	network.Jsonify(w, sdp, http.StatusOK)
+
+
+	// by RabbitMQ
+	//utils.Send([]byte("so call me maybe"), "calling")
+	//
+	//res := utils.Rec("answering")
+	//var sdp forms.SDP
+	//err := json.Unmarshal(res, &sdp)
+	//if err != nil {
+	//	network.Jsonify(w, forms.ErrorAnswer{
+	//		Error:   err.Error(),
+	//		Message: "Shit with answer format: try again",
+	//	}, http.StatusInternalServerError)
+	//}
+	//network.Jsonify(w, sdp, http.StatusOK)
 
 
 	// uc := usecase.GetUseCase()
