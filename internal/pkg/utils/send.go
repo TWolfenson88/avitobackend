@@ -17,7 +17,7 @@ func Send(dater []byte, qName string) {
 	// подключение и объявление очереди вынести в отдельную функцию
 	var conn *amqp.Connection
 	for {
-		conn2, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+		conn2, err := amqp.Dial("amqp://guest:guest@localhost/")
 		if err == nil {
 			conn = conn2
 			fmt.Println("connected to RABBIT")
