@@ -1,9 +1,10 @@
 package utils
 
 import (
-	"log"
-
+	"fmt"
 	"github.com/streadway/amqp"
+	"log"
+	"time"
 )
 
 func failOnError(err error, msg string) {
@@ -14,8 +15,19 @@ func failOnError(err error, msg string) {
 
 func Send(dater []byte, qName string) {
 	// подключение и объявление очереди вынести в отдельную функцию
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	failOnError(err, "Failed to connect to RabbitMQ")
+	var conn *amqp.Connection
+	for {
+		conn2, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+		if err == nil {
+			conn = conn2
+			fmt.Println("connected to RABBIT")
+			break
+		}
+		fmt.Println("Not connected: ", err)
+		time.Sleep(500 * time.Millisecond)
+	}
+	// conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	// failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
