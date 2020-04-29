@@ -12,7 +12,6 @@ services:
       - "8100:8100"
 
   rabbit:
-    rabbitmq:
       image: "rabbitmq:3"
       ports:
         - "5672:5672"
