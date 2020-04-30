@@ -42,11 +42,12 @@ pc.onicecandidate = async event => {
             console.log('data from server: ', event.data)
         };
 
+
         socket.onerror = function (error) {
             console.log('Error is: ', error.message)
         };
 
-        document.getElementById('localSessionDescription').value = btoa(JSON.stringify(pc.localDescription))
+        // document.getElementById('localSessionDescription').value = btoa(JSON.stringify(pc.localDescription))
         // await sleep(1000);
         //}
 

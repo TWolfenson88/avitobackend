@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 
@@ -28,13 +29,33 @@ func WaitForCall(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 
 func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	// minimalism
-	go func() {
-		utils.ChFirst <- "call me maybe"
-		fmt.Println("pushed to channel ChFirst")
-	}()
+	//go func() {
+	//	utils.ChFirst <- "call me maybe"
+	//	fmt.Println("pushed to channel ChFirst")
+	//}()
 
-	res := <-utils.ChSecond
-	fmt.Printf("result: %s", res)
+	if len(utils.ChKirillOnline) == 0 {
+		fmt.Println("HTTP: Kirill if offline")
+		network.Jsonify(w, "KIRILL OFFLINE", http.StatusOK)
+		return
+	}
+
+	if len(utils.ChAndrey) == 0 {
+		utils.ChAndrey<-"Andrey wants to call Kirill"
+		fmt.Println("HTTP: Put to ChAndrey")
+	} else {
+		fmt.Println("HTTP: ChAndrey not empty")
+		network.Jsonify(w, "Another Andrey is online. SHIT!", http.StatusInternalServerError)
+		return
+	}
+	time.Sleep(100 * time.Millisecond)
+	if len(utils.ChKirill) == 0 {
+		fmt.Println("HTTP: ChKirill is empty")
+		network.Jsonify(w, "Somebody red from Kirill. SHIT!", http.StatusInternalServerError)
+		return
+	}
+	res := <-utils.ChKirill
+	fmt.Printf("HTTP: %s", res)
 
 	var sdp forms.SDP
 	err := json.Unmarshal(res, &sdp)
@@ -46,7 +67,7 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		return
 	}
 	network.Jsonify(w, sdp, http.StatusOK)
-
+	return
 
 	// by RabbitMQ
 	//utils.Send([]byte("so call me maybe"), "calling")

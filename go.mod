@@ -8,6 +8,7 @@ require (
 	github.com/gobwas/pool v0.2.0 // indirect
 	github.com/gobwas/ws v1.0.3
 	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/gorilla/websocket v1.4.2
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
