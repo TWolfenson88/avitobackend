@@ -62,20 +62,18 @@ func StartTCP() {
 			//	// handle error
 			//}
 			for {
+				// 1 Кирилл коннектится
 				fmt.Println("TCP: Opened")
 				header, _ := ws.ReadHeader(conn)
 				if len(utils.ChKirillOnline) == 0 {
 					fmt.Println("TCP: Setting KIRILL to online")
+					// 2 ставим Кириллу онлайн путём заполнения канала
 					utils.ChKirillOnline <- "ONLINE"
 				}
-
+				// 3 ждем, пока от Андрея придет запрос на звонок
 				andrey := <- utils.ChAndrey
 				fmt.Println("TCP: got ", andrey)
-
-
-				// ждем, пока в канал что-то не придет
-				// _ = <-utils.ChFirst
-
+				// 7 вычитываем все, что пришло от Кирилла (сдп-шник)
 				payload := make([]byte, header.Length)
 				_, err = io.ReadFull(conn, payload)
 				if err != nil { panic(err) }
@@ -83,25 +81,23 @@ func StartTCP() {
 				header.Masked = false
 
 				if err := ws.WriteHeader(conn, header); err != nil { panic(err) }
-
-				// fmt.Println(len(utils.ChKirillOnline))
-
+				// 8 Отправляем сдп обратно Кириллу (а чего бы и нет) даже если он уже закрыл страницу
 				if _, err := conn.Write(payload); err != nil {
 					// handle error
 				}
-
-
+				// 9 Кладем в канал Кирилла СДП (на всякий случай проверяем, а не лежит ли что-то уже в канале,
+				// что маловероятно, но проверить стоит)
 				if len(utils.ChKirill) == 0 {
 					utils.ChKirill <- payload
 					fmt.Println("TCP: put payload to channel")
 				} else {
 					fmt.Println("TCP: Kirill's channel not empty")
 				}
+				// 10 убираем Кирилла из онлайна, чтобы нельзя было снова выполнить п. 5
 				if len(utils.ChKirillOnline) == 1 {
 					fmt.Println("TCP: Setting KIRILL to offline")
 					_ = <-utils.ChKirillOnline
 				}
-
 
 				// utils.ChSecond<-payload
 

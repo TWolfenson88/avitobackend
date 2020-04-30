@@ -31,6 +31,7 @@ pc.onicecandidate = async event => {
     if (event.candidate === null) {
 
         let socket = new WebSocket("ws://localhost:8100");
+        // let socket = new WebSocket("ws://84.201.181.0:8100");
 
         socket.onopen = function (e) {
             console.log('Connected to server!')
