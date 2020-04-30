@@ -28,11 +28,12 @@ func WaitForCall(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 }
 
 func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
-	// minimalism
-	//go func() {
-	//	utils.ChFirst <- "call me maybe"
-	//	fmt.Println("pushed to channel ChFirst")
-	//}()
+	defer func() {
+		fmt.Println("HTTP: Andrey occasionally closed connection. Setting him off")
+		if len(utils.ChAndrey) == 1 {
+			_ = <- utils.ChAndrey
+		}
+	}()
 
 	if len(utils.ChKirillOnline) == 0 {
 		fmt.Println("HTTP: Kirill if offline")
@@ -45,7 +46,8 @@ func CallUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		fmt.Println("HTTP: Put to ChAndrey")
 	} else {
 		fmt.Println("HTTP: ChAndrey not empty")
-		network.Jsonify(w, "Another Andrey is online. SHIT!", http.StatusInternalServerError)
+		network.Jsonify(w, "Another Andrey is online?? SHIT! Mb needs to restart server??",
+			http.StatusInternalServerError)
 		return
 	}
 	time.Sleep(100 * time.Millisecond)
