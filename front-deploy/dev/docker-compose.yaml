@@ -5,7 +5,7 @@ services:
   avitofront:
     build:
       context: "../.."
-      dockerfile: "front-deploy/dev/go/Dockerfile"
+      dockerfile: "front-deploy/dev/docker/Dockerfile"
     hostname: "avitofront"
     ports:
       - "8080:8080"
