@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+  avitofront:
+    build:
+      context: "../.."
+      dockerfile: "front-deploy/dev/go/Dockerfile"
+    hostname: "avitofront"
+    ports:
+      - "8080:8080"

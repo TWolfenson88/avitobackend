@@ -4,6 +4,6 @@ WORKDIR /source
 
 EXPOSE 8080
 
-COPY . .
+COPY ../.. .
 
 CMD go run main.go
