@@ -100,7 +100,9 @@
     let pc2 = new RTCPeerConnection({
         iceServers: [
             {
+
                 urls: 'stun:84.201.128.121:3478'
+                // urls: 'stun:stun.sipgate.net:10000'
             }
         ]
     });
@@ -129,7 +131,11 @@
         }
     };
 
-    let socket = new WebSocket("ws://84.201.181.0:8080/ws");
+
+
+    // let socket = new WebSocket("ws://84.201.181.0:8080/ws");
+
+    let socket = new WebSocket("ws://84.201.141.129:8080/ws");
 
     //let instring;
 
