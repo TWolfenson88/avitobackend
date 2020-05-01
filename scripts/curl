@@ -1,0 +1,36 @@
+REGISTRATION
+curl -vd '{"data":{"name":"Mike", "password":"qwerty"}}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/reg
+
+GET ALL USERS
+curl -v -H "Content-Type: application/json" -X POST http://localhost:5000/user/all
+
+
+
+
+
+
+Login: curl -vd '{"token":"ho", "sess_id":"uuid", "data":{"email":"mail@mail", "password":"qwerty"}}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/user/login
+curl -vd '{"token":"ho", "sess_id":"pofig", "data":{"email":"mail@mail", "password":"qwerty"}}' -H "Content-Type: application/json" -X POST http://3.10.88.5:5000/api/v1/user/login
+
+Profile: curl -vd '{"token":"ho", "sess_id":"22747a98-7f3a-4f8f-a174-9383f189f73e"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/profile/get
+
+Register: curl -vd '{"token":"ho", "sess_id":"doesntmatter", "data":{"name":"abc", "surname":"fsdfsdf", "position":"fsdf", "department":"sdks", "phone":"44228", "email":"mail@ma2il", "password":"qwerty"}}' -H "Content-Type: application/json" -X POST http://3.10.88.5:5000/api/v1/user/reg
+
+Blog: curl -vd '{"token":"ho", "sess_id":"22747a98-7f3a-4f8f-a174-9383f189f73e"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/blog/feed
+curl -vd '{"token":"ho", "sess_id":"22747a98-7f3a-4f8f-a174-9383f189f73e"}' -H "Content-Type: application/json" -X POST http://3.10.88.5:5000/api/v1/blog/feed
+
+Post: curl -vd '{"token":"ho", "sess_id":"a6ef1aad-c043-4674-8070-c367e7a63b26"}' -H "Content-Type: application/json" -X POST http://3.10.88.5:5000/api/v1/post/feed
+
+
+22747a98-7f3a-4f8f-a174-9383f189f73e
+/api/v1/profile/get
+
+UserFeed: curl -vd '{"token":"ho", "sess_id":"22747a98-7f3a-4f8f-a174-9383f189f73e"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/user/all
+curl -vd '{"token":"ho", "sess_id":"f64dcede-1222-454b-b28c-7f612c618927"}' -H "Content-Type: application/json" -X GET http://3.10.88.5:5000/api/v1/user/all
+
+GetThisProfile: curl -vd '{"token":"ho", "sess_id":"22747a98-7f3a-4f8f-a174-9383f189f73e", "data":{"uid":9}}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/user/get
+
+Insert into blog (name, description) values ('main', 'main blog');
+
+
+curl -d -v '{"name":"abc", "surname":"fsdfsdf", "position":"fsdf", "department":"sdks", "phone":"2aaar", "email":"rrtaz234", "password":"45678"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/v1/adduser
