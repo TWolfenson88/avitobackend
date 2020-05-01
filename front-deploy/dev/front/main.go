@@ -90,10 +90,13 @@ func (h *Hub) run() {
 		case client := <-h.register:
 			h.clients[client] = true
 		case client := <-h.unregister:
+			h.clients[client] = true
+		/*
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.send)
 			}
+			*/
 		case message := <-h.broadcast:
 			for client := range h.clients {
 				fmt.Println("message in broadcast: ", string(message))
