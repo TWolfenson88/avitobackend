@@ -7,6 +7,7 @@ import (
 	"avitocalls/internal/pkg/network"
 	"avitocalls/internal/pkg/user/usecase"
 	"encoding/json"
+	"log"
 
 	"net/http"
 	// "strconv"
@@ -36,8 +37,7 @@ func FeedUsers(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 func RegisterUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 	// toDo move form checker here (from db)
 	uc := usecase.GetUseCase()
-
-	var form forms.RealRegForm
+	var form models.User
 	err := json.Unmarshal(data.Body, &form)
 	if err != nil {
 		network.Jsonify(w, forms.ErrorAnswer{
@@ -46,7 +46,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps map[string]string) 
 		},  http.StatusNotAcceptable)
 		return
 	}
-	answer, status, err := uc.RegUser(form.Form)  //form.Form)
+	answer, status, err := uc.RegUser(form)  //form.Form)
 	if err != nil {
 		network.Jsonify(w, forms.ErrorAnswer{
 			Error:   err.Error(),
@@ -65,6 +65,60 @@ func RegisterUser(w http.ResponseWriter, r *http.Request, ps map[string]string) 
 		UID:  		answer,
 		Message: 	"successfully registered user",
 	}, status)
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
+	// toDo move form checker here (from db)
+	uc := usecase.GetUseCase()
+
+	var form models.User
+	err := json.Unmarshal(data.Body, &form)
+	if err != nil {
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   err.Error(),
+			Message: "Invalid Json",
+		},  http.StatusNotAcceptable)
+		return
+	}
+	_, status, err := uc.ValidateLogin(form)  // в будущем по уиду надо будет смотреть друзей и их онлайн
+	if err != nil {
+		log.Println("user wasn't logged cause of db trouble")
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   err.Error(),
+			Message: "troubles with db",
+		},  status)
+		return
+	}
+	if status == http.StatusForbidden {
+		log.Println("user wasn't logged cause of wrong password")
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   "wrong password",
+			Message: "wrong password",
+		},  status)
+		return
+	}
+	if status == http.StatusConflict {
+		log.Println("user wasn't logged cause of wrong name")
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   "no such user: name",
+			Message: "no such user",
+		},  status)
+		return
+	}
+
+	var users []models.User
+	users, code, err := uc.InitUsers(users)
+	if err != nil {
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   err.Error(),
+			Message: "Troubles with initing user feed",
+		},  code)
+		return
+	}
+	network.Jsonify(w, forms.GetUsersAnswer{
+		Users:  	users,
+		Message: 	"successfully get user feed",
+	}, http.StatusOK)
 }
 
 //func GetUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {

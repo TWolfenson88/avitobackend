@@ -40,6 +40,16 @@ func (uc *userUseCase) RegUser(user models.User) (int, int, error) {
 	return uid, http.StatusOK, nil
 }
 
+func (uc *userUseCase) ValidateLogin(user models.User) (int, int, error) {
+	status, uid, err := uc.rep.UserLogin(user)
+	if status != http.StatusOK {
+		return uid, status, err
+	}
+	return uid, http.StatusOK, nil
+}
+
+
+
 
 //func (uc *userUseCase) FindUser(user *models.User) (int, error) {
 //	err := uc.rep.GetUserByUID(user)

@@ -8,6 +8,7 @@ import (
 type Repository interface {
 	GetAllUsers() ([]models.User, error)
 	UserRegistration(user models.User) (int, int, error)
+	UserLogin(user models.User) (int, int, error)
 	// Authorize(form forms.LoginForm) (int, int, error)
 	// AddEntering(session models.Session) (int, error)
 	// GetUserByUID(user *models.User) (error)

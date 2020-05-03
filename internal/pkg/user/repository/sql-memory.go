@@ -6,6 +6,7 @@ import (
 	"avitocalls/internal/pkg/security"
 	"avitocalls/internal/pkg/user"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 
 	// "fmt"
 	"github.com/jackc/pgx"
@@ -81,6 +82,30 @@ func (er *sqlUserRepository) UserRegistration(user models.User) (int, int, error
 		return http.StatusInternalServerError, -1, err
 	}
 	return http.StatusOK, uid, nil
+}
+
+func (er *sqlUserRepository) UserLogin(user models.User) (int, int, error) {
+	cnt := 0
+	sqlStatement := `SELECT count(*) cnt FROM profile WHERE name=$1;`
+	row := er.db.QueryRow(sqlStatement, user.Name)
+	err := row.Scan(&cnt)
+	if cnt == 0 {
+		return http.StatusConflict, -1, nil
+	}
+	uid := -1
+	var pass []byte
+	sqlStatement = `SELECT uid, password FROM profile WHERE name=$1;`
+	row = er.db.QueryRow(sqlStatement, user.Name)
+	err = row.Scan(&uid, &pass)
+	if err != nil {
+		return http.StatusInternalServerError, -1, err
+	}
+	err = bcrypt.CompareHashAndPassword(pass, []byte(user.Password))
+	if err == nil {
+		return http.StatusOK, uid, nil
+	} else {
+		return http.StatusForbidden, -1, nil
+	}
 }
 
 

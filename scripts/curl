@@ -1,8 +1,16 @@
+ip: 84.201.141.129
+
 REGISTRATION
-curl -vd '{"data":{"name":"Mike", "password":"qwerty"}}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/reg
+
+curl -vd '{"name":"Mike", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/reg
+curl -vd '{"name":"Mike", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://84.201.141.129:5000/users/reg
 
 GET ALL USERS
-curl -v -H "Content-Type: application/json" -X POST http://localhost:5000/user/all
+curl -v -H "Content-Type: application/json" -X GET http://localhost:5000/users/all
+curl -v -H "Content-Type: application/json" -X GET http://84.201.141.129:5000/users/all
+
+LOGIN
+curl -vd '{"name":"Mike", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/login
 
 
 

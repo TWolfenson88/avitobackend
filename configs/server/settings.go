@@ -29,10 +29,17 @@ var routesMap = map[string][]settings.MapHandler{
 		Type:    		"POST",
 		Handler: 		userDelivery.RegisterUser,
 	}},
-	"/user/all": {{
-		Type:         	"POST",
+	"/users/all": {{
+		Type:         	"GET",
 		Handler:      	userDelivery.FeedUsers,
 	}},
+	"/users/login": {{
+		Type:         	"POST",
+		Handler:      	userDelivery.LoginUser,
+	}},
+	//"/ws": {{
+	//	Type:
+	//}}
 }
 
 var doOnce sync.Once
