@@ -11,6 +11,10 @@ type UseCase interface {
 	ValidateLogin(user models.User) (int, int, error)
 	// LogSession(session models.Session) (int, error)
 	// FindUser(user *models.User) (int, error)
+
+	// for Socket
+	SetOnline(username string) error
+	SetOffline(username string) error
 }
 
 //type MemUseCase interface {

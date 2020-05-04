@@ -1,44 +1,14 @@
-package main
+package delivery
 
 import (
-	"avitocalls/socket/sock"
-	"flag"
+	"avitocalls/internal/pkg/sock"
+	"avitocalls/internal/pkg/user/usecase"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 )
 
-var addr = flag.String("addr", ":8080", "http service address")
-
-//func serveHome(w http.ResponseWriter, r *http.Request) {
-//	log.Println(r.URL)
-//	if r.URL.Path != "/" {
-//		http.Error(w, "Not found", http.StatusNotFound)
-//		return
-//	}
-//	if r.Method != "GET" {
-//		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-//		return
-//	}
-//	http.ServeFile(w, r, "main.html")
-//}
-
-func main() {
-	flag.Parse()
-	hub := sock.NewHub()
-	go hub.Run()
-	// http.HandleFunc("/", serveHome)
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		ServeWs(hub, w, r)
-	})
-	err := http.ListenAndServe(*addr, nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
-}
-
-//
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -63,6 +33,18 @@ func ServeWs(hub *sock.Hub, w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	fmt.Println("Client connected: ", string(p))
+
+
+	// toDO write p to ONLINE
+	if p != nil {
+		//go func() {
+			uc := usecase.GetUseCase()
+			uc.SetOnline(string(p))
+		//}()
+	}
+
+
+
 	client := &sock.Client{
 		Hub: hub,
 		Conn: conn,
@@ -77,8 +59,6 @@ func ServeWs(hub *sock.Hub, w http.ResponseWriter, r *http.Request) {
 	//if errrr != nil {
 	//	fmt.Println(errrr)
 	//}
-
-
 
 	client.Hub.Register <- client
 

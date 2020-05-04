@@ -1,6 +1,7 @@
 package sock
 
 import (
+	"avitocalls/internal/pkg/user/usecase"
 	"bytes"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -79,7 +80,12 @@ func (c *Client) ReadPump() {
 func (c *Client) WritePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
-		fmt.Println(c.Indef, " disConnected.")         //вот тута мы определяем что клиент отключился.
+		fmt.Println(c.Indef, " disConnected.")         //вот тут мы определяем, что клиент отключился.
+
+		// toDo SET OFFLINE
+		uc := usecase.GetUseCase()
+		uc.SetOffline(c.Indef)
+
 		ticker.Stop()
 		c.Conn.Close()
 	}()

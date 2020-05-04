@@ -7,7 +7,9 @@ import (
 
 func main() {
 	// log.SetFlags(log.LstdFlags | log.Lmicroseconds)
-	server.Start()
-	// erver.StartTCP()
+	go server.Start()
+	server.SocketStart()
+
+	// server.SockerStart()
 
 }

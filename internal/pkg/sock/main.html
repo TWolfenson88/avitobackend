@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!--
+ *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="description" content="Client-side WebRTC code samples">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+
+    <base target="_blank">
+
+    <title>Peer connection - upgrade</title>
+
+
+
+</head>
+
+<body>
+
+<div id="container">
+    <input type="text" id="username" placeholder="Твой юзернейм"/>
+    <br/>
+    <button id="regBtn" onclick="window.registerConn()">register</button>
+    <br/>
+    <p>Наш СДП в виде б64:</p>
+    <textarea id="localSessionDescription" readonly="true"></textarea> <br />
+
+    Golang base64 Session Description<br />
+    <textarea id="remoteSessionDescription"></textarea> <br/>
+    <input type="text" id="reciver" placeholder="Кому звоним?"/> <br/>
+    <button disabled id="snsBtn" onclick="window.startSession()"> Start Session </button><br />
+
+    <br />
+
+    Video<br />
+    <video id="video1" width="160" height="120" autoplay muted></video> <br />
+
+
+
+    Video<br />
+    <video id="remoteVideo" width="300" height="400" autoplay muted></video> <br />
+
+    Logs<br />
+    <div id="logs"></div>
+</div>
+
+<!--А ВОТ ТУТ ВОТ ПИЗДА, ахах. Я ща крч, ниже листай, там типа что куда отправляется, получается написано. С самого низу и вверх начинай, от registerUser-->
+<script>
+
+    let pc = new RTCPeerConnection({
+        iceServers: [
+            {
+                urls: 'stun:84.201.128.121:3478'
+            }
+        ]
+    })
+    let log = msg => {
+        document.getElementById('logs').innerHTML += msg + '<br>'
+    }
+
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            pc.addStream(document.getElementById('video1').srcObject = stream)
+            pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log)
+        }).catch(log)
+
+    pc.oniceconnectionstatechange = e => log(pc.iceConnectionState)
+    pc.onicecandidate = event => {
+        if (event.candidate === null) {
+            document.getElementById('localSessionDescription').value = btoa(JSON.stringify(pc.localDescription))
+        }
+    }
+
+    /*    window.startSession = () => {
+            let sd = document.getElementById('remoteSessionDescription').value
+            if (sd === '') {
+                return alert('Session Description must not be empty')
+            }
+
+            try {
+                pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(atob(sd))))
+            } catch (e) {
+                alert(e)
+            }
+        }*/
+
+    const remoteVideo = document.getElementById('remoteVideo');
+
+    let pc2 = new RTCPeerConnection({
+        iceServers: [
+            {
+
+                urls: 'stun:84.201.128.121:3478'
+                // urls: 'stun:stun.sipgate.net:10000'
+            },
+            {
+                url: 'turn:84.201.128.145:3478?transport=udp',
+                credential: 'testpass',
+                username: 'testuser'
+            }
+
+        ]
+    });
+
+    pc2.addEventListener('track', gotRemoteStream);
+
+    function gotRemoteStream(e) {
+        if (remoteVideo.srcObject !== e.streams[0]) {
+            console.log(e);
+            remoteVideo.srcObject = e.streams[0];
+            console.log('pc2 received remote stream');
+        }
+    }
+
+
+
+    let sendChannel = pc.createDataChannel('foo')
+    sendChannel.onclose = () => console.log('sendChannel has closed')
+    sendChannel.onopen = () => console.log('sendChannel has opened')
+    sendChannel.onmessage = e => log(`Message from DataChannel '${sendChannel.label}' payload '${e.data}'`)
+
+    pc.oniceconnectionstatechange = e => log(pc.iceConnectionState)
+    pc.onicecandidate = event => {
+        if (event.candidate === null) {
+            document.getElementById('localSessionDescription').value = btoa(JSON.stringify(pc.localDescription))
+        }
+    };
+
+
+
+    // let socket = new WebSocket("ws://84.201.181.0:8080/ws");
+
+    // let socket = new WebSocket("ws://84.201.141.129:8080/ws");
+
+    let socket = new WebSocket("ws://localhost:8080/ws");
+
+    //let instring;
+
+    socket.onopen =function(e) {
+        console.log('Connected to server!');
+        //socket.send(btoa(JSON.stringify(pc.localDescription)))
+    };
+
+    let swtch = false;
+
+    socket.onmessage = function(event){
+        /**
+         * ВОТ СЮДА ВНИМАТЕЛЬНА
+         * Сюда приходит данные с первого клиента в виде б64 чтроки. Мы их парсим и дальше, получив имя отправителя,
+         * должны отправить тоже СДП, зашифрованный в б64. Но вот тут я не успел доделать, у меня всё сломалось, аххах))
+         *
+         *
+         * Воооот как-то так. Там дальше эти СДПшники надо попривязывать к чему-то, но это уже клиентская сторона.
+         * Главное, чтобы когда отправляешь данные на сервер впервые (после того как зарегался), JSON должен выглядеть так:
+         * {
+         *     "reciever":"username получателя",
+         *     "obj": {                                 |
+         *         "sender":"юзернейм отправителя",     |  => вот эта часть зашифрована в б64
+         *         "objj":"SDP объект"                  |
+         *     }
+         * }
+         */
+
+        let parsed = JSON.parse(atob(event.data));
+        console.log('data from server: ', parsed);
+        //instring = event.data;
+        if (!swtch) {
+            let toAnswwr = {
+                sender: '',
+                objj: 'And here is nswer for caller SDP too'
+            };
+
+            let snd = {
+                receiver: parsed.sender,
+                obj: btoa(JSON.stringify(toAnswwr))
+            };
+            socket.send(JSON.stringify(snd));
+            swtch = true;
+        }
+        //    pc2.setRemoteDescription(parsed);
+        //   pc2.setLocalDescription(parsed);
+        //  onSetRemoteSuccess(pc2);
+
+    };
+
+    socket.onerror = function(error) {
+        console.log('Error is: ', error.message)
+    };
+
+    pc.onnegotiationneeded = e =>
+        pc.createOffer().then(d => pc.setLocalDescription(d)).catch(log)
+
+    window.sendMessage = () => {
+        let message = document.getElementById('message').value;
+        if (message === '') {
+            return alert('Message must not be empty')
+        }
+
+        sendChannel.send(message)
+    };
+
+    //2. Вот тут мы отправляем на клиент объект
+    window.startSession = () => {
+        let reciver = document.getElementById('reciver').value;
+        if(reciver !== ''){
+
+            //2.1 Вот этот объект нам понадобится там, куда мы его отправляем. Здесь мы указываем сендер - имя отправителя и оббж - это сам ТОТ САМЫЙ SDP
+            let sss = {
+                sender: document.getElementById('username').value,
+                obbj: "Here we put object SDP"
+            };
+
+            //2.2 А вот это уже отправляется через сервер. Ресивер - получатель. Обж -б64 зашифрованная строка с данными отправителя. Листай выше, ща покажу что с этим потом происходит.
+            let data = {
+                receiver: reciver,
+                obj: btoa(JSON.stringify(sss))
+            };
+            let json = JSON.stringify(data);
+            socket.send(json);
+            console.log("request sended!", json);
+
+            swtch = true;
+
+        }
+    };
+    //1. ВОТ ТУТ мы отправляем на сервер первое сообщение и он его записывает как индефикатор подключение, юзернейм
+    window.registerConn = function () {
+        let username = document.getElementById('username').value;
+        if (username !== '') {
+            let snsBtn = document.getElementById('snsBtn');
+            snsBtn.disabled = false;
+            socket.send(username);
+            console.log('User sended');
+
+            let regBtn = document.getElementById('regBtn');
+            regBtn.disabled = true;
+        }
+    }
+
+
+</script>
+
+
+</body>
+</html>
