@@ -8,6 +8,8 @@ import (
 func main() {
 	// log.SetFlags(log.LstdFlags | log.Lmicroseconds)
 	go server.Start()
-	server.StartTCP()
+	server.SocketStart()
+
+	// server.SockerStart()
 
 }
