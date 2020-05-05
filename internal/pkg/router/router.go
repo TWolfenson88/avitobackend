@@ -24,7 +24,9 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			//	handler = middleware.Authenticate(handler)
 			//}
 			//handler = middleware.CheckToken(handler)
+			handler = middleware.SetAllowOrigin(handler)
 			handler = middleware.DecodeBody(handler)
+
 
 			//if pack.CORS {
 			//	s.Secure.CORSMap[pack.Type] = struct{}{}
@@ -42,6 +44,8 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			case "OPTIONS":
 				optionsHandler = handler
 			}
+
+
 
 		}
 	}

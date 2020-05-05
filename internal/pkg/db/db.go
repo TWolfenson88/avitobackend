@@ -8,20 +8,12 @@ import (
 	"sync"
 )
 
+// not secured? come on, man, welcome
 var (
-	//host     = "rc1b-9fc2waa12uuwznii.mdb.yandexcloud.net" // "localhost"
-	//port     = 6432 // uint16(5432)
-	//user     = "bakaef" // = os.Getenv("DB_USER")
-	//password = "qwertyqwerty" // = os.Getenv("DB_PASSWORD")
-	//dbname   = "calls" // = os.Getenv("DB_NAME")
-	// sslmode = "verify-full"
-	// sslrootcert = "/home/username/.postgresql/root.crt"
-
-	// please do not use this db :)
-	host     = "95.163.180.8"
-	port     = 2000
+	host     = "database-1.czbpipfhq5vi.eu-west-2.rds.amazonaws.com"
+	port     = 7000
 	user     = "postgres"
-	password = "qwerty"
+	password = "qwertyqwerty"
 	dbname   = "postgres"
 )
 
