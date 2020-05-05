@@ -47,23 +47,3 @@ func (uc *userUseCase) ValidateLogin(user models.User) (int, int, error) {
 	}
 	return uid, http.StatusOK, nil
 }
-
-
-
-
-//func (uc *userUseCase) FindUser(user *models.User) (int, error) {
-//	err := uc.rep.GetUserByUID(user)
-//	if err != nil {
-//		return http.StatusInternalServerError, err
-//	}
-//	return http.StatusOK, nil
-//}
-//
-//func (uc *userUseCase) LoginUser(user forms.LoginForm) (int, int, error) {
-//	status, uid, err := uc.rep.Authorize(user)
-//	if status != http.StatusOK {
-//		return -1, status, err
-//	}
-//	return uid, http.StatusOK, nil
-//}
-

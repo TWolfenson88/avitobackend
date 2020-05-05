@@ -6,7 +6,6 @@ type RealGetUserForm struct {
 
 type GetUserForm struct {
 	Uid 	int 			`json:"uid"`
-	// Email 	string 		`json:"email"`
 }
 
 type RealRegUserForm struct {

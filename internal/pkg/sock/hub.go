@@ -22,7 +22,7 @@ type Hub struct {
 	// Unregister requests from clients.
 	Unregister chan *Client
 }
-//Тут надо понять как друг другу передать объект
+
 type Msgg struct {
 	Receiver 	string `json:"receiver"`
 	Obj 		string `json:"obj"`
@@ -39,7 +39,6 @@ func NewHub() *Hub {
 }
 
 func (h *Hub) Run() {
-	//3. Тут у нас бесконечный цикл Хаба, который держит на себе все соединения и проверяет кто куда, раздаёт сообщения от клиента к клиенту
 	for {
 		select {
 		case client := <-h.Register:
@@ -56,7 +55,6 @@ func (h *Hub) Run() {
 			for client := range h.Clients {
 				fmt.Println("message in broadcast: ", string(message))
 
-				//5. Вот тут происходит парс ЖЫСОНа и передача на клиента б64 строки (obj)
 				var msg = Msgg{}
 
 				errr := json.Unmarshal(message, &msg)

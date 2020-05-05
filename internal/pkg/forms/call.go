@@ -11,8 +11,6 @@ type CallStartForm struct {
 
 type CallEndForm struct {
 	CallID		int				`json:"call_id"`
-	// Caller  	    string 			`json:"caller"`
-	// Answerer  	string 			`json:"answerer"`
 	Result		bool			`json:"result"`
 	TimeEnd		time.Time		`json:"time"`
 }
