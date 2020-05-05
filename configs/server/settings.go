@@ -19,10 +19,10 @@ var routesMap = map[string][]settings.MapHandler{
 		Type:    "POST",
 		Handler: callDelivery.EndCall,
 	}},
-	//"/calls/history": {{
-	//	Type:    "POST",
-	//	Handler: callDelivery.GetHistory,
-	//}},
+	"/calls/history": {{
+		Type:    "GET",
+		Handler: callDelivery.GetHistory,
+	}},
 	// PROFILES
 	"/users/reg": {{
 		Type:    "POST",

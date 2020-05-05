@@ -63,3 +63,31 @@ func EndCall(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		Message: 		"end call info saved",
 	}, http.StatusOK)
 }
+
+func GetHistory(w http.ResponseWriter, r *http.Request, ps map[string]string) {
+	uc := usecase.GetUseCase()
+	var form forms.CallHistReqForm
+	err := json.Unmarshal(data.Body, &form)
+	if err != nil {
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   err.Error(),
+			Message: "Invalid Json",
+		},  http.StatusNotAcceptable)
+		return
+	}
+
+	calls, err := uc.GetUserCallHistory(form)
+	if err != nil {
+		network.Jsonify(w, forms.ErrorAnswer{
+			Error:   err.Error(),
+			Message: "can't get history of calls",
+		}, http.StatusInternalServerError)
+		return
+	}
+	network.Jsonify(w, forms.HistoryCallsAnswer{
+		Calls:  		calls,
+		Message: 		"successfully get call history",
+	}, http.StatusOK)
+}
+
+

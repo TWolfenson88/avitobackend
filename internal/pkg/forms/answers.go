@@ -39,3 +39,7 @@ type LoginAnswer struct {
 	Message string 			`json:"message"`
 }
 
+type HistoryCallsAnswer struct {
+	Calls 	[]models.Call	`json:"data"`
+	Message string			`json:"message"`
+}

@@ -26,3 +26,7 @@ type EndCallSuccessForm struct {
 	Data		int				`json:"data"`
 	Message		string			`json:"message"`
 }
+
+type CallHistReqForm struct {
+	UID		int					`json:"uid"`
+}

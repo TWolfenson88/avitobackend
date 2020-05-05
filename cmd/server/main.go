@@ -10,7 +10,4 @@ func main() {
 	go server.SocketStart()
 	server.Start()
 
-
-	// server.SockerStart()
-
 }

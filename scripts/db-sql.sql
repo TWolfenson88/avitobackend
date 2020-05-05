@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS friend
 -- );
 
 
--- add it!
+
 CREATE TYPE mark AS ENUM ('bad', 'ok', 'good');
 
 CREATE TABLE IF NOT EXISTS call
@@ -65,3 +65,14 @@ CREATE TABLE IF NOT EXISTS call_mark
         emotion         mark,
         caller          BOOLEAN NOT NULL
 );
+
+-- add it!
+CREATE TABLE IF NOT EXISTS statistic
+(
+        id              SERIAL PRIMARY KEY,
+        call_id         INTEGER REFERENCES call (id),
+        ip              VARCHAR(12),
+        country         VARCHAR,
+        region          VARCHAR,
+        city            VARCHAR
+)
