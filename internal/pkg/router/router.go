@@ -24,6 +24,7 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			//	handler = middleware.Authenticate(handler)
 			//}
 			//handler = middleware.CheckToken(handler)
+			handler = middleware.SetAllowOrigin(handler)
 			handler = middleware.DecodeBody(handler)
 
 
@@ -43,7 +44,8 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			case "OPTIONS":
 				optionsHandler = handler
 			}
-			handler = middleware.SetAllowOrigin(handler)
+
+
 
 		}
 	}
