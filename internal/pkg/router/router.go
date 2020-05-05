@@ -25,6 +25,7 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			//}
 			//handler = middleware.CheckToken(handler)
 			handler = middleware.DecodeBody(handler)
+			handler = middleware.SetAllowOrigin(handler)
 
 			//if pack.CORS {
 			//	s.Secure.CORSMap[pack.Type] = struct{}{}
