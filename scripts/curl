@@ -1,0 +1,27 @@
+ip: 84.201.141.129
+
+REGISTRATION
+
+curl -vd '{"name":"Dobby", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/reg
+curl -vd '{"name":"Dobby", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://84.201.141.129:5000/users/reg
+
+GET ALL USERS
+curl -v -H "Content-Type: application/json" -X GET http://localhost:5000/users/all
+curl -v -H "Content-Type: application/json" -X GET http://84.201.141.129:5000/users/all
+
+LOGIN
+curl -vd '{"name":"Mike", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/login
+curl -vd '{"name":"Dobby", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://84.201.141.129:5000/users/login
+
+
+START CALL
+curl -vd '{"caller":1, "answerer":2}' -H "Content-Type: application/json" -X POST http://localhost:5000/calls/start
+curl -vd '{"caller":11, "answerer":1}' -H "Content-Type: application/json" -X POST http://84.201.141.129:5000/calls/start
+
+STOP CALL
+curl -vd '{"call_id":1, "result":true}' -H "Content-Type: application/json" -X POST http://localhost:5000/calls/stop
+curl -vd '{"call_id":4, "result":true}' -H "Content-Type: application/json" -X POST http://84.201.141.129:5000/calls/stop
+
+GET HISTORY
+curl -vd '{"uid":1}' -H "Content-Type: application/json" -X GET http://localhost:5000/calls/history
+curl -vd '{"uid":1}' -H "Content-Type: application/json" -X GET http://84.201.141.129:5000/calls/history
