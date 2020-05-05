@@ -3,11 +3,17 @@ package delivery
 import (
 	"avitocalls/internal/pkg/sock"
 	"avitocalls/internal/pkg/user/usecase"
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 )
+
+type clients_online struct {
+	Type string `json:"type"`
+	ClientsList []string `json:"clients_list"`
+}
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -33,6 +39,20 @@ func ServeWs(hub *sock.Hub, w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	fmt.Println("Client connected: ", string(p))
+
+	var clients_list []string
+
+	for client := range hub.Clients {
+		clients_list = append(clients_list, client.Indef)
+	}
+
+	var clientsOnline clients_online
+	clientsOnline.Type = "clients_list"
+	clientsOnline.ClientsList = clients_list
+
+	bytes_list, _ := json.Marshal(clientsOnline)
+
+	hub.Broadcast <- bytes_list
 
 
 	// toDO write p to ONLINE

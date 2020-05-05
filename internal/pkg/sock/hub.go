@@ -76,6 +76,17 @@ func (h *Hub) Run() {
 					}
 				}
 			}
+		case bytes_list := <- h.Broadcast:
+			for client := range h.Clients {
+				select {
+				case client.Send <- bytes_list:
+				default:
+					fmt.Println("there?")
+					close(client.Send)
+					delete(h.Clients, client)
+				}
+			}
+
 		}
 	}
 }
