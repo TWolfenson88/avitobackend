@@ -13,6 +13,11 @@ LOGIN
 curl -vd '{"name":"Mike", "password":"qwerty"}' -H "Content-Type: application/json" -X POST http://localhost:5000/users/login
 
 
+START CALL
+curl -vd '{"caller":1, "answerer":2}' -H "Content-Type: application/json" -X POST http://localhost:5000/calls/start
+
+STOP CALL
+curl -vd '{"call_id":1, "result":true}' -H "Content-Type: application/json" -X POST http://localhost:5000/calls/stop
 
 
 

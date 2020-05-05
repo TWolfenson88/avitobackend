@@ -1,3 +1,5 @@
+DROP TABLE if exists call_mark;
+DROP TABLE if exists call;
 -- DROP TABLE if exists login;
 -- DROP TABLE if exists friend;
 -- DROP TABLE if exists profile;
@@ -31,15 +33,15 @@ CREATE TABLE IF NOT EXISTS friend
 --      add_time        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 -- );
 
-CREATE TABLE IF NOT EXISTS login  -- not used now too
-(
-        id              SERIAL PRIMARY KEY,
-        sess_id         UUID,
-        user_id         INTEGER REFERENCES profile (uid),
-        user_agent      varchar(128),
-        add_time        TIMESTAMPTZ NOT NULL,
-        ip_addr         VARCHAR(24)
-);
+-- CREATE TABLE IF NOT EXISTS login  -- not used now too
+-- (
+--         id              SERIAL PRIMARY KEY,
+--         sess_id         UUID,
+--         user_id         INTEGER REFERENCES profile (uid),
+--         user_agent      varchar(128),
+--         add_time        TIMESTAMPTZ NOT NULL,
+--         ip_addr         VARCHAR(24)
+-- );
 
 
 -- add it!
@@ -50,18 +52,16 @@ CREATE TABLE IF NOT EXISTS call
         id              SERIAL PRIMARY KEY,
         caller          INTEGER REFERENCES profile (uid),
         answerer        INTEGER REFERENCES profile (uid),
-        start_time      TIMESTAMPTZ NOT NULL,
-        longitude       INTEGER,
---         caller_mark     mark,
---         answer_mark     mark,
-        video_data      VARCHAR
-)
+        start_time      TIMESTAMP NOT NULL,
+        end_time        TIMESTAMP,
+        result          BOOLEAN     DEFAULT FALSE
+);
 
 CREATE TABLE IF NOT EXISTS call_mark
 (
         id              SERIAL PRIMARY KEY,
         call_id         INTEGER REFERENCES call (id),
-        caller_id       INTEGER REFERENCES profile (uid),
+        emoted_user_id  INTEGER REFERENCES profile (uid),
         emotion         mark,
         caller          BOOLEAN NOT NULL
-)
+);

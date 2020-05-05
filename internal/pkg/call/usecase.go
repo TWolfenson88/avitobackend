@@ -1,7 +1,8 @@
 package call
 
-import "avitocalls/internal/pkg/models"
+import "avitocalls/internal/pkg/forms"
 
 type UseCase interface {
-	GetReceiverObject(call models.Call) (models.Call, int, error)
+	SaveCallStarting(call forms.CallStartForm) (int, error)
+	SaveCallEnding(call forms.CallEndForm) (int, error)
 }

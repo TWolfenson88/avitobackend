@@ -1,9 +1,9 @@
 package server
 
 import (
+	callDelivery "avitocalls/internal/pkg/call/delivery"
 	"avitocalls/internal/pkg/router"
 	"avitocalls/internal/pkg/settings"
-	// callDelivery "avitocalls/internal/pkg/call/delivery"
 	userDelivery "avitocalls/internal/pkg/user/delivery"
 	"github.com/dimfeld/httptreemux"
 	"sync"
@@ -11,31 +11,30 @@ import (
 
 var routesMap = map[string][]settings.MapHandler{
 	// CALLS
-	//"/calls/make": {{  // toDo /calls/make/id
-	//	Type:    			"POST",
-	//	Handler: 			callDelivery.CallUser,
-	//	// CORS:         false,
-	//	// AuthRequired: true,
-	//	// CSRF:         false,
-	//	// TokenRequired:true,
+	"/calls/start": {{
+		Type:    "POST",
+		Handler: callDelivery.StartCall,
+	}},
+	"/calls/stop": {{
+		Type:    "POST",
+		Handler: callDelivery.EndCall,
+	}},
+	//"/calls/history": {{
+	//	Type:    "POST",
+	//	Handler: callDelivery.GetHistory,
 	//}},
-	//"/calls/wait": {{
-	//	Type:    			"GET",
-	//	Handler: 			callDelivery.WaitForCall,
-	//}},
-
 	// PROFILES
 	"/users/reg": {{
-		Type:    		"POST",
-		Handler: 		userDelivery.RegisterUser,
+		Type:    "POST",
+		Handler: userDelivery.RegisterUser,
 	}},
 	"/users/all": {{
-		Type:         	"GET",
-		Handler:      	userDelivery.FeedUsers,
+		Type:    "GET",
+		Handler: userDelivery.FeedUsers,
 	}},
 	"/users/login": {{
-		Type:         	"POST",
-		Handler:      	userDelivery.LoginUser,
+		Type:    "POST",
+		Handler: userDelivery.LoginUser,
 	}},
 	//"/ws": {{
 	//	Type:

@@ -80,7 +80,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		},  http.StatusNotAcceptable)
 		return
 	}
-	_, status, err := uc.ValidateLogin(form)  // в будущем по уиду надо будет смотреть друзей и их онлайн
+	uid, status, err := uc.ValidateLogin(form)  // в будущем по уиду надо будет смотреть друзей и их онлайн
 	if err != nil {
 		log.Println("user wasn't logged cause of db trouble")
 		network.Jsonify(w, forms.ErrorAnswer{
@@ -115,8 +115,9 @@ func LoginUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 		},  code)
 		return
 	}
-	network.Jsonify(w, forms.GetUsersAnswer{
+	network.Jsonify(w, forms.LoginAnswer{
 		Users:  	users,
+		UID:		uid,
 		Message: 	"successfully get user feed",
 	}, http.StatusOK)
 }

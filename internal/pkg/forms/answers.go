@@ -5,19 +5,16 @@ import "avitocalls/internal/pkg/models"
 type CallerAnswer struct {
 	BString  string 		`json:"data"`
 	Message  string 		`json:"message"`
-	// Status   int 			`json:"status"`
 }
 
 type LongPollAnswer struct {
 	Caller   string 		`json:"data"`
 	Message  string 		`json:"message"`
-	// Status   int 			`json:"status"`
 }
 
 type ErrorAnswer struct {
 	Error  	string			`json:"data"`
 	Message string 			`json:"message"`
-	// Status  int 			`json:"status"`
 }
 
 
@@ -33,6 +30,12 @@ type RegUserAnswer struct {
 
 type GetUsersAnswer struct {
 	Users  	[]models.User	`json:"data"`
+	Message string 			`json:"message"`
+}
+
+type LoginAnswer struct {
+	Users  	[]models.User	`json:"data"`
+	UID 	int				`json:"uid"`
 	Message string 			`json:"message"`
 }
 
