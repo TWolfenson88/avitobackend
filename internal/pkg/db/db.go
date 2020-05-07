@@ -10,10 +10,15 @@ import (
 
 // not secured? come on, man, welcome
 var (
-	host     = "database-1.czbpipfhq5vi.eu-west-2.rds.amazonaws.com"
-	port     = 7000
+	//host     = "database-1.czbpipfhq5vi.eu-west-2.rds.amazonaws.com"
+	//port     = 7000
+	//user     = "postgres"
+	//password = "qwertyqwerty"
+	//dbname   = "postgres"
+	host     = "84.201.143.114"
+	port     = 3000
 	user     = "postgres"
-	password = "qwertyqwerty"
+	password = "qwerty"
 	dbname   = "postgres"
 )
 
