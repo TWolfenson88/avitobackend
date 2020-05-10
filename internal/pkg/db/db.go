@@ -8,12 +8,11 @@ import (
 	"sync"
 )
 
-// not secured? come on, man, welcome
 var (
-	host     = "database-1.czbpipfhq5vi.eu-west-2.rds.amazonaws.com"
+	host     = "cloud"
 	port     = 7000
 	user     = "postgres"
-	password = "qwertyqwerty"
+	password = "notRealPassword"
 	dbname   = "postgres"
 )
 

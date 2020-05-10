@@ -21,6 +21,6 @@ func DecodeBody(next settings.HandlerFunc) settings.HandlerFunc {
 		}
 		data.Body = body
 		// _, err = io.Copy(ioutil.Discard, r.Body)
-		next(w, r, ps)  //r.WithContext(ctx)
+		next(w, r, ps)
 	}
 }

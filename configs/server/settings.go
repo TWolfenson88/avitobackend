@@ -51,19 +51,6 @@ func GetConfig() *settings.ServerSettings {
 			Ip:     "0.0.0.0",
 			Routes: routesMap,
 		}
-		settings.SecureSettings = settings.GlobalSecure{
-			CORSMethods: "",
-			CORSMap:     map[string]struct{}{},
-			AllowedHosts: map[string]struct{}{
-				"http://localhost":      {},
-				"http://localhost:8080": {},
-				"http://localhost:5000": {},
-				"http://127.0.0.1":      {},
-				"http://127.0.0.1:8080": {},
-				"http://127.0.0.1:5000": {},
-			},
-		}
-		conf.InitSecure(&settings.SecureSettings)
 		router.InitRouter(&conf, httptreemux.New())
 	})
 	return &conf
