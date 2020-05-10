@@ -1,5 +1,5 @@
-DROP TABLE if exists call_mark;
-DROP TABLE if exists call;
+-- DROP TABLE if exists call_mark;
+-- DROP TABLE if exists call;
 -- DROP TABLE if exists login;
 -- DROP TABLE if exists friend;
 -- DROP TABLE if exists profile;
@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS profile
 (
         uid             SERIAL PRIMARY KEY,
         name            VARCHAR(30)     UNIQUE  NOT NULL check ( name <> '' ),
-        email           VARCHAR(64),
-        ident           VARCHAR(128),
         status          BOOLEAN                 DEFAULT FALSE,
         password        BYTEA                   NOT NULL CHECK ( octet_length(password) <> 0 )
 );

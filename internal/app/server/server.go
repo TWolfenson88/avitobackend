@@ -23,7 +23,6 @@ func Start() {
 	}
 
 	fmt.Println("server is running on " + strconv.Itoa(serverSettings.Port))
-	// err := server.ListenAndServeTLS("./configs/ssl-bundle/bundle.crt", "./configs/ssl-bundle/private.key.pem")
 	err := serve.ListenAndServe()
 	if err != nil {
 		fmt.Println(err)
@@ -36,7 +35,6 @@ func SocketStart() {
 	flag.Parse()
 	hub := sock.NewHub()
 	go hub.Run()
-	// http.HandleFunc("/", serveHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		delivery.ServeWs(hub, w, r)
 	})

@@ -2,14 +2,6 @@ package models
 
 import "time"
 
-//type Call struct {
-//	CallerID 		string    `json:"caller"`
-//	ReceiverID		string    `json:"receiver"`
-//	BString 		string 	  `json:"b64"`
-//	// что-то ещё?
-//}
-
-
 type Call struct {
 	CallID			int 			`json:"call_id"`
 	CallerID		int 			`json:"caller_id"`

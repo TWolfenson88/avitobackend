@@ -24,7 +24,7 @@ func NewSqlUserRepository(db *pgx.ConnPool) user.Repository {
 
 
 func (er *sqlUserRepository) GetAllUsers() ([]models.User, error) {
-	sqlStatement := `SELECT uid, name, status FROM profile;`
+	sqlStatement := `SELECT uid, name, status FROM profile where status='t';`
 	rows, err := er.db.Query(sqlStatement)
 	if err != nil {
 		return nil, err

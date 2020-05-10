@@ -35,7 +35,6 @@ func FeedUsers(w http.ResponseWriter, r *http.Request, ps map[string]string) {
 
 
 func RegisterUser(w http.ResponseWriter, r *http.Request, ps map[string]string) {
-	// toDo move form checker here (from db)
 	uc := usecase.GetUseCase()
 	var form models.User
 	err := json.Unmarshal(data.Body, &form)
