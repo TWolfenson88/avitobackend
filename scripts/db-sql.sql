@@ -1,5 +1,5 @@
-DROP TABLE if exists call_mark;
-DROP TABLE if exists call;
+-- DROP TABLE if exists call_mark;
+-- DROP TABLE if exists call;
 -- DROP TABLE if exists login;
 -- DROP TABLE if exists friend;
 -- DROP TABLE if exists profile;

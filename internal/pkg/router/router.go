@@ -8,7 +8,6 @@ import (
 	"log"
 )
 
-// Parse route map and return configured Router
 func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -20,18 +19,10 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 	for key, list := range s.Routes {
 		for _, pack := range list {
 			handler := pack.Handler
-			//if pack.AuthRequired {
-			//	handler = middleware.Authenticate(handler)
-			//}
-			//handler = middleware.CheckToken(handler)
+
 			handler = middleware.SetAllowOrigin(handler)
 			handler = middleware.DecodeBody(handler)
 
-			// handler = middleware.SetAllowOrigin(handler)
-			//if pack.CORS {
-			//	s.Secure.CORSMap[pack.Type] = struct{}{}
-			//	handler = middleware.CORS(handler)
-			//}
 			switch pack.Type {
 			case "GET":
 				(*router).GET(key, httptreemux.HandlerFunc(handler))
@@ -44,8 +35,6 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			case "OPTIONS":
 				optionsHandler = handler
 			}
-			// handler = middleware.SetAllowOrigin(handler)
-
 
 		}
 	}
@@ -55,9 +44,5 @@ func InitRouter(s *settings.ServerSettings, router *httptreemux.TreeMux) {
 			(*router).OPTIONS(key, httptreemux.HandlerFunc(optionsHandler))
 		}
 	}
-	//// generate "GET, POST, OPTIONS, HEAD, PUT" string
-	//for key, _ := range s.Secure.CORSMap {
-	//	s.Secure.CORSMethods += key + ", "
-	//}
 	s.Router = router
 }
